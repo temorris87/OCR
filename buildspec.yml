@@ -1,5 +1,0 @@
-artifacts:
-  files:
-    - .gitignore
-    - application.py
-    - requirements.txt

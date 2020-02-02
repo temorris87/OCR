@@ -1,0 +1,7 @@
+version: 0.0
+os: linux
+files:
+  - source: /application.py
+    destination: /home/ubuntu/OCR
+  - source: /requirements.txt
+    destination: /home/ubuntu/OCR
