@@ -1,9 +1,11 @@
 import os
-from flask import Flask, flash, request, redirect
+import pytesseract
+from flask import Flask, flash, make_response, request, redirect
+from PIL import Image
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = 'C:\\Users\\temor\\Desktop'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+UPLOAD_FOLDER = '/mnt/c/Users/temor/Desktop/'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 application = Flask(__name__)
 application.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -20,9 +22,13 @@ def index():
     if file.filename == '':
         return 'Image not found.'
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(application.config['UPLOAD_FOLDER'], filename + '_test'))
-        return 'Image saved successfully.'
+        # filename = secure_filename(file.filename)
+        # file.save(os.path.join(application.config['UPLOAD_FOLDER'], filename + '_test'))
+
+        text = pytesseract.image_to_string(Image.open(file))
+        response = make_response(str(text), 200)
+        response.mimetype = "text/plain"
+        return response
 
 
 if __name__ == '__main__':
